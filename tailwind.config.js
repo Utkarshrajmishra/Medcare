@@ -15,8 +15,10 @@ export default {
       boxShadow: {
         panelShadow: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;",
       },
+      backgroundImage: {
+        "hero-gradient": "url('./src/assets/Blur.png')", // Updated path
+      },
     },
   },
   plugins: [],
 };
-

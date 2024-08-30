@@ -22,7 +22,7 @@ const NavLinks = [
 const NavBar = () => {
   return (
     <nav className="py-5 ">
-      <section className="flex items-center text-textColor justify-between px-16">
+      <section className="flex items-center text-textColor justify-between md:px-20 px-10">
         <div>
           <img src={Logo} alt="wesbite logo" />
         </div>
@@ -33,7 +33,7 @@ const NavBar = () => {
             </li>
           ))}
         </ul>
-        <button className="bg-primaryColor px-5 text-[0.9rem] text-white py-1 rounded-3xl">
+        <button className="bg-primaryColor px-5 text-[0.9rem] text-white py-2 rounded-3xl">
           Login
         </button>
       </section>
