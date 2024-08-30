@@ -21,7 +21,7 @@ const NavLinks = [
 
 const NavBar = () => {
   return (
-    <nav className="py-5 ">
+    <nav className="py-5 shadow-sm ">
       <section className="flex items-center text-textColor justify-between md:px-20 px-10">
         <div>
           <img src={Logo} alt="wesbite logo" />
