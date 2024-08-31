@@ -4,7 +4,7 @@ import SearchBox from "../components/SearchBox";
 import { RxCross2 } from "react-icons/rx";
 import { Disease } from "../constants/ Diseases";
 
-const Prediction = () => {
+const Sympton = () => {
   const [selectedDisease, setSelectedDisease] = useState([]);
 
   const addItem = (index) => {
@@ -64,4 +64,4 @@ const Prediction = () => {
   );
 };
 
-export default Prediction;
+export default Sympton;
