@@ -1,11 +1,14 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import NavBar from "../components/NavBar";
 import SearchBox from "../components/SearchBox";
 import { RxCross2 } from "react-icons/rx";
 import { Disease } from "../constants/ Diseases";
+import { Dialog } from "../components/Dialog";
+
 const Sympton = () => {
   const [sympton, setSymptons] = useState(Disease);
   const [selectedDisease, setSelectedDisease] = useState([]);
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   const addItem = (index) => {
     const disease = sympton[index];
@@ -28,6 +31,14 @@ const Sympton = () => {
     setSelectedDisease(disease);
   };
 
+  const handleContinueClick = () => {
+    setDialogOpen(true); // Open the dialog
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false); // Close the dialog
+  };
+
   return (
     <section>
       <NavBar />
@@ -42,13 +53,16 @@ const Sympton = () => {
                 <p
                   key={item.ID}
                   onClick={() => removeItem(index)}
-                  className="py-2  cursor-pointer px-2 bg-blue-100 text-blue-600 outline outline-1  outline-blue-700 text-sm rounded-3xl flex items-center justify-center h-full"
+                  className="py-2 cursor-pointer px-2 bg-blue-100 text-blue-600 outline outline-1 outline-blue-700 text-sm rounded-3xl flex items-center justify-center h-full"
                 >
                   {item.Name} <RxCross2 className="ml-2 text-xl" />
                 </p>
               ))}
             </div>
-            <button className="bg-blue-500 font-bold h-10 w-full rounded-md text-white">
+            <button
+              className="bg-blue-500 font-bold h-10 w-full rounded-md text-white"
+              onClick={handleContinueClick} // Handle continue click
+            >
               Continue
             </button>
           </section>
@@ -65,10 +79,12 @@ const Sympton = () => {
                 <p className="text-center cursor-pointer">{item.Name}</p>
               </div>
             ))}
-            
           </div>
         </section>
       </section>
+
+      {/* Dialog Component */}
+      <Dialog isOpen={isDialogOpen} onClose={handleDialogClose} />
     </section>
   );
 };
