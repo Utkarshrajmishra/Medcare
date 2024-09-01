@@ -3,7 +3,6 @@ import NavBar from "../components/NavBar";
 import SearchBox from "../components/SearchBox";
 import { RxCross2 } from "react-icons/rx";
 import { Disease } from "../constants/ Diseases";
-
 const Sympton = () => {
   const [sympton, setSymptons] = useState(Disease);
   const [selectedDisease, setSelectedDisease] = useState([]);
@@ -66,6 +65,7 @@ const Sympton = () => {
                 <p className="text-center cursor-pointer">{item.Name}</p>
               </div>
             ))}
+            
           </div>
         </section>
       </section>
