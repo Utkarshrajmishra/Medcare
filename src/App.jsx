@@ -1,9 +1,9 @@
 import "./App.css";
-import Prediction from "./pages/Prediction";
+import Sympton from "./pages/Sympton";
 function App() {
   return (
     <>
-      <Prediction />
+      <Sympton />
     </>
   );
 }

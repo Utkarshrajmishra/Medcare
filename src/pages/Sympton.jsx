@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import NavBar from "../components/NavBar";
 import SearchBox from "../components/SearchBox";
 import { RxCross2 } from "react-icons/rx";
 import { Disease } from "../constants/ Diseases";
 
 const Sympton = () => {
+  const [sympton, setSymptons] = useState(Disease);
   const [selectedDisease, setSelectedDisease] = useState([]);
 
   const addItem = (index) => {
-    const disease = Disease[index];
+    const disease = sympton[index];
     if (!selectedDisease.some((item) => item.ID === disease.ID)) {
       setSelectedDisease((prevState) => [...prevState, disease]);
     }
+  };
+
+  const onSearch = (searchText) => {
+    const filteredSymptons = Disease.filter((sympton) =>
+      sympton.Name.toLowerCase().includes(searchText.toLowerCase())
+    );
+
+    setSymptons((prev) => filteredSymptons);
   };
 
   const removeItem = (index) => {
@@ -24,7 +33,7 @@ const Sympton = () => {
     <section>
       <NavBar />
       <section className="md:px-20 px-5  py-8">
-        <SearchBox />
+        <SearchBox onChange={onSearch} />
         {/* Selected Diseases Section */}
         {selectedDisease.length > 0 && (
           <section className="mt-8">
@@ -48,7 +57,7 @@ const Sympton = () => {
         {/* All Diseases Section */}
         <section className="mt-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {Disease.map((item, index) => (
+            {sympton?.map((item, index) => (
               <div
                 key={item.ID}
                 onClick={() => addItem(index)}

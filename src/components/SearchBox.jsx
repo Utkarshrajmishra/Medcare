@@ -1,4 +1,8 @@
-const SearchBox = () => {
+const SearchBox = ({ onChange }) => {
+  const handleChange = (e) => {
+    onChange(e.target.value);
+  };
+
   return (
     <section>
       <div className="relative mt-4">
@@ -21,6 +25,7 @@ const SearchBox = () => {
         </div>
         <input
           type="search"
+          onChange={handleChange}
           id="default-search"
           className="block w-full p-4 pl-10 text-sm font-inter outline-1 outline-blue-100 outline  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500  d dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Search problems by name"

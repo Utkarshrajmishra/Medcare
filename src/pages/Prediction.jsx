@@ -1,12 +1,13 @@
 import Table from "../components/Table";
 import NavBar from "../components/NavBar";
 const Prediction = () => {
+  
   return (
     <>
       <NavBar />
-      <section className="px-20 mt-10 flex flex-col gap-8">
+      <section className="md:px-20 px-5 mt-10 flex flex-col gap-8">
         <div className="flex flex-col gap-2 items-center">
-          <p className="text-2xl text-gray-800 font-semibold">
+          <p className="text-2xl text-center text-gray-800 font-semibold">
             Disease Predicted: Your Health Insights Report
           </p>
           <p className="text-md text-center text-textColor text-">
