@@ -1,9 +1,10 @@
 import "./App.css";
-import Sympton from "./pages/Sympton";
+import Recording from "./pages/Recording";
+
 function App() {
   return (
     <>
-      <Sympton />
+      <Recording />
     </>
   );
 }
