@@ -1,4 +1,3 @@
-import { Button } from "./ui/button";
 import {
   Dialog as UIDialog,
   DialogContent,
@@ -10,7 +9,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function Dialog({ isOpen, onClose }) {
+export function Dialog({ isOpen, onClose, userInfo, setUserInfo }) {
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const newInfo = { ...userInfo,[name]:value};
+    setUserInfo(newInfo);
+  };
+
   return (
     <UIDialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -26,6 +33,9 @@ export function Dialog({ isOpen, onClose }) {
               Birth Year
             </Label>
             <Input
+              name="year"
+              value={userInfo.year}
+              onChange={handleChange}
               id="year-of-birth"
               type="number"
               placeholder="1990"
@@ -38,18 +48,38 @@ export function Dialog({ isOpen, onClose }) {
             </Label>
             <div className="col-span-3 flex gap-4">
               <label>
-                <input type="radio" name="gender" value="male" /> Male
+                <input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  checked={userInfo.gender === "male"}
+                  onChange={handleChange}
+                />{" "}
+                Male
               </label>
               <label>
-                <input type="radio" name="gender" value="female" /> Female
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  checked={userInfo.gender === "female"}
+                  onChange={handleChange}
+                />{" "}
+                Female
               </label>
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={onClose} className="bg-blue-500">
+          <button
+            onClick={() => console.log(userInfo)}
+            disabled={!userInfo.year || !userInfo.gender} // Disable if year or gender is not filled
+            className={`p-2 text-sm rounded text-white font-bold ${
+              !userInfo.year || !userInfo.gender ? "bg-gray-300" : "bg-blue-500"
+            }`} 
+          >
             Save changes
-          </Button>
+          </button>
         </DialogFooter>
       </DialogContent>
     </UIDialog>

@@ -1,10 +1,10 @@
 import "./App.css";
-import Recording from "./pages/Recording";
+import Sympton from "./pages/Sympton";
 
 function App() {
   return (
     <>
-      <Recording />
+      <Sympton />
     </>
   );
 }

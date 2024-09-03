@@ -2,47 +2,51 @@ import { useState } from "react";
 import NavBar from "../components/NavBar";
 import SearchBox from "../components/SearchBox";
 import { RxCross2 } from "react-icons/rx";
-import { Disease } from "../constants/ Diseases";
+import { Disease } from "@/constants/ Diseases";
 import { Dialog } from "../components/Dialog";
 
-const Sympton = () => {
-  const [sympton, setSymptons] = useState(Disease);
+const Symptom = () => {
+  const [symptoms, setSymptoms] = useState(Disease);
   const [selectedDisease, setSelectedDisease] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    year: "",
+    gender: "",
+  });
 
   const addItem = (index) => {
-    const disease = sympton[index];
+    const disease = symptoms[index];
     if (!selectedDisease.some((item) => item.ID === disease.ID)) {
       setSelectedDisease((prevState) => [...prevState, disease]);
     }
   };
 
   const onSearch = (searchText) => {
-    const filteredSymptons = Disease.filter((sympton) =>
-      sympton.Name.toLowerCase().includes(searchText.toLowerCase())
+    const filteredSymptoms = Disease.filter((symptom) =>
+      symptom.Name.toLowerCase().includes(searchText.toLowerCase())
     );
 
-    setSymptons((prev) => filteredSymptons);
+    setSymptoms(filteredSymptoms);
   };
 
   const removeItem = (index) => {
-    const disease = [...selectedDisease];
-    disease.splice(index, 1);
-    setSelectedDisease(disease);
+    const updatedDiseases = [...selectedDisease];
+    updatedDiseases.splice(index, 1);
+    setSelectedDisease(updatedDiseases);
   };
 
   const handleContinueClick = () => {
-    setDialogOpen(true); // Open the dialog
+    setDialogOpen(true);
   };
 
   const handleDialogClose = () => {
-    setDialogOpen(false); // Close the dialog
+    setDialogOpen(false);
   };
 
   return (
     <section>
       <NavBar />
-      <section className="md:px-20 px-5  py-8">
+      <section className="md:px-20 px-5 py-8">
         <SearchBox onChange={onSearch} />
         {/* Selected Diseases Section */}
         {selectedDisease.length > 0 && (
@@ -61,7 +65,7 @@ const Sympton = () => {
             </div>
             <button
               className="bg-blue-500 font-bold h-10 w-full rounded-md text-white"
-              onClick={handleContinueClick} // Handle continue click
+              onClick={handleContinueClick}
             >
               Continue
             </button>
@@ -70,7 +74,7 @@ const Sympton = () => {
         {/* All Diseases Section */}
         <section className="mt-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {sympton?.map((item, index) => (
+            {symptoms.map((item, index) => (
               <div
                 key={item.ID}
                 onClick={() => addItem(index)}
@@ -84,9 +88,14 @@ const Sympton = () => {
       </section>
 
       {/* Dialog Component */}
-      <Dialog isOpen={isDialogOpen} onClose={handleDialogClose} />
+      <Dialog
+        isOpen={isDialogOpen}
+        onClose={handleDialogClose}
+        userInfo={userInfo}
+        setUserInfo={setUserInfo}
+      />
     </section>
   );
 };
 
-export default Sympton;
+export default Symptom;
