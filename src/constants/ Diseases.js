@@ -110,13 +110,25 @@ export const Disease = [
   {
     ID: 153,
 
-    Name: "Fast breathing",
+    Name: "Fast, deepened breathing",
+  },
+
+  {
+    ID: 76,
+
+    Name: "Feeling of foreign body in the eye",
   },
 
   {
     ID: 11,
 
     Name: "Fever",
+  },
+
+  {
+    ID: 57,
+
+    Name: "Going black before the eyes",
   },
 
   {
@@ -299,7 +311,12 @@ export const Disease = [
     Name: "Sweating",
   },
 
- 
+  {
+    ID: 248,
+
+    Name: "Swollen glands in the armpits",
+  },
+
   {
     ID: 169,
 

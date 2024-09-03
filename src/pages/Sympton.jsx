@@ -4,8 +4,10 @@ import SearchBox from "../components/SearchBox";
 import { RxCross2 } from "react-icons/rx";
 import { Disease } from "@/constants/ Diseases";
 import { Dialog } from "../components/Dialog";
+import { useNavigate } from "react-router-dom";
 
 const Symptom = () => {
+  const navigation = useNavigate();
   const [symptoms, setSymptoms] = useState(Disease);
   const [selectedDisease, setSelectedDisease] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -37,6 +39,12 @@ const Symptom = () => {
 
   const handleContinueClick = () => {
     setDialogOpen(true);
+  };
+
+  const handleRedirection = () => {
+    const diseaseId = selectedDisease.map((item) => item.ID).join(",");
+    navigation("/prediction", { state: { id: diseaseId, userInfo: userInfo } });
+    setDialogOpen(false);
   };
 
   const handleDialogClose = () => {
@@ -90,7 +98,7 @@ const Symptom = () => {
       {/* Dialog Component */}
       <Dialog
         isOpen={isDialogOpen}
-        onClose={handleDialogClose}
+        onClose={handleRedirection}
         userInfo={userInfo}
         setUserInfo={setUserInfo}
       />

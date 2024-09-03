@@ -1,17 +1,20 @@
 import Logo from "../assets/images/logo.png";
+import { Link } from "react-router-dom";
 
 const NavLinks = [
   {
     id: 1,
     links: "Home",
+    path: "/",
   },
   {
     id: 2,
     links: "Prediction",
+    path: "/sympton",
   },
   {
     id: 3,
-    links: "About",
+    links: "Audio Analysis",
   },
   {
     id: 4,
@@ -29,7 +32,7 @@ const NavBar = () => {
         <ul className="flex items-center gap-[2.7rem] text-[0.96rem]">
           {NavLinks?.map((items, index) => (
             <li key={items.id} className="hover:text-primaryColor">
-              {items.links}
+              <Link to={items.path}>{items.links}</Link>
             </li>
           ))}
         </ul>

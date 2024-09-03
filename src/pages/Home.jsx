@@ -22,8 +22,8 @@ const Home = () => {
                 repellendus, ut at quibusdam nesciunt illo dolor, expedita
                 veritatis.
               </p>
-              <button className="text-white bg-primaryColor py-3 px-5 text-sm rounded-3xl">
-                Request an Appointment
+              <button className="text-white bg-primaryColor py-3 font-semibold  px-6 text-sm rounded-3xl">
+                Let's Get Started
               </button>
               <div className="flex gap-10 mt-5">
                 <div>

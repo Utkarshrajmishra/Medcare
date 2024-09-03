@@ -1,107 +1,43 @@
-const Table = () => {
+const Table = ({ disease }) => {
   return (
-    <div class="relative overflow-x-auto outline outline-1 outline-blue-100 rounded-md">
-      <table class="w-full text-sm text-left text-gray-500">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+    <div className="relative overflow-x-auto outline outline-1 outline-blue-100 rounded-md">
+      <table className="w-full text-sm text-left text-gray-500">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th scope="col" class="px-6 py-3">
-              Product name
+            <th scope="col" className="px-6 py-3">
+              Disease Name
             </th>
-            <th scope="col" class="px-6 py-3">
-              Color
+            <th scope="col" className="px-6 py-3">
+              Accuracy
             </th>
-            <th scope="col" class="px-6 py-3">
-              Category
+
+            <th scope="col" className="px-6 py-3">
+              Prof. Name
             </th>
-            <th scope="col" class="px-6 py-3">
-              Price
-            </th>
-            <th scope="col" class="px-6 py-3">
+            <th scope="col" className="px-6 py-3">
               Action
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr class="odd:bg-white even:bg-gray-50 border-b">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-            >
-              Apple MacBook Pro 17"
-            </th>
-            <td class="px-6 py-4">Silver</td>
-            <td class="px-6 py-4">Laptop</td>
-            <td class="px-6 py-4">$2999</td>
-            <td class="px-6 py-4">
-              <a href="#" class="font-medium text-blue-600 hover:underline">
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr class="odd:bg-white even:bg-gray-50 border-b">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-            >
-              Microsoft Surface Pro
-            </th>
-            <td class="px-6 py-4">White</td>
-            <td class="px-6 py-4">Laptop PC</td>
-            <td class="px-6 py-4">$1999</td>
-            <td class="px-6 py-4">
-              <a href="#" class="font-medium text-blue-600 hover:underline">
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr class="odd:bg-white even:bg-gray-50 border-b">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-            >
-              Magic Mouse 2
-            </th>
-            <td class="px-6 py-4">Black</td>
-            <td class="px-6 py-4">Accessories</td>
-            <td class="px-6 py-4">$99</td>
-            <td class="px-6 py-4">
-              <a href="#" class="font-medium text-blue-600 hover:underline">
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr class="odd:bg-white even:bg-gray-50 border-b">
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-            >
-              Google Pixel Phone
-            </th>
-            <td class="px-6 py-4">Gray</td>
-            <td class="px-6 py-4">Phone</td>
-            <td class="px-6 py-4">$799</td>
-            <td class="px-6 py-4">
-              <a href="#" class="font-medium text-blue-600 hover:underline">
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-            >
-              Apple Watch 5
-            </th>
-            <td class="px-6 py-4">Red</td>
-            <td class="px-6 py-4">Wearables</td>
-            <td class="px-6 py-4">$999</td>
-            <td class="px-6 py-4">
-              <a href="#" class="font-medium text-blue-600 hover:underline">
-                Edit
-              </a>
-            </td>
-          </tr>
+          {disease?.map((item, index) => (
+            <tr className="odd:bg-white even:bg-gray-50 border-b">
+              <th
+                scope="row"
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+              >
+                {item.Issue.Name}
+              </th>
+              <td className="px-6 py-4">{item.Issue.Accuracy}%</td>
+
+              <td className="px-6 py-4">{item.Issue.ProfName}</td>
+              <td className="px-6 py-4">
+                <a href="#" class="font-medium text-blue-600 hover:underline">
+                  Know More
+                </a>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

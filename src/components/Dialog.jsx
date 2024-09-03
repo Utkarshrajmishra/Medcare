@@ -18,6 +18,8 @@ export function Dialog({ isOpen, onClose, userInfo, setUserInfo }) {
     setUserInfo(newInfo);
   };
 
+
+
   return (
     <UIDialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
@@ -72,8 +74,8 @@ export function Dialog({ isOpen, onClose, userInfo, setUserInfo }) {
         </div>
         <DialogFooter>
           <button
-            onClick={() => console.log(userInfo)}
-            disabled={!userInfo.year || !userInfo.gender} // Disable if year or gender is not filled
+            onClick={onClose}
+            disabled={!userInfo.year || !userInfo.gender} 
             className={`p-2 text-sm rounded text-white font-bold ${
               !userInfo.year || !userInfo.gender ? "bg-gray-300" : "bg-blue-500"
             }`} 
