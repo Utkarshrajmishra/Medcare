@@ -15,10 +15,7 @@ const NavLinks = [
   {
     id: 3,
     links: "Audio Analysis",
-  },
-  {
-    id: 4,
-    links: "Doctor Appointment",
+    path: "/audio-analysis",
   },
 ];
 

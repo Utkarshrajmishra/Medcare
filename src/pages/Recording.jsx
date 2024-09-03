@@ -1,14 +1,33 @@
 import NavBar from "@/components/NavBar";
 import { Recorder } from "@/components/Recorder";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaMicrophoneAlt } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const Recording = () => {
   const [dialogStatus, setDialogStatus] = useState(false);
+  const [transcript, setTranscript] = useState("");
 
-  const openDialog = () => setDialogStatus(true);
+  const startToast = () => {
+    toast.success("Recording Started!");
+  };
 
-  const closeDialog = () => setDialogStatus(false);
+  const stopToast = () => {
+    toast.error("Recording Stopped");
+  };
+
+  const saveToast = () => {
+    toast.success("Recording Saved!");
+  };
+
+  const openDialog = () => {
+    setDialogStatus(true);
+    setTranscript(""); // Reset the transcript state to an empty string
+  };
+
+  const closeDialog = () => {
+    setDialogStatus(false);
+  };
 
   return (
     <>
@@ -46,8 +65,16 @@ const Recording = () => {
           </div>
         </section>
       </section>
-      <Recorder isOpen={dialogStatus} onClose={closeDialog} />
+      <Recorder
+        isOpen={dialogStatus}
+        onClose={closeDialog}
+        startToast={startToast}
+        stopToast={stopToast}
+        setTranscript={setTranscript}
+        savedToast={saveToast}
+      />    
     </>
   );
 };
+
 export default Recording;
