@@ -3,8 +3,10 @@ import { Recorder } from "@/components/Recorder";
 import { useState } from "react";
 import { FaMicrophoneAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Recording = () => {
+  const navigation=useNavigate()
   const [dialogStatus, setDialogStatus] = useState(false);
   const [transcript, setTranscript] = useState("");
 
@@ -12,17 +14,22 @@ const Recording = () => {
     toast.success("Recording Started!");
   };
 
+  const redirect=()=>{
+    if(!transcript) return toast.error("No recording found!")
+    toast.success("Recording Saved!");
+    setDialogStatus(false);
+    navigation("/audio-prediction",{state:{transcript:transcript}});
+  }
+
   const stopToast = () => {
     toast.error("Recording Stopped");
   };
 
-  const saveToast = () => {
-    toast.success("Recording Saved!");
-  };
+  
 
   const openDialog = () => {
     setDialogStatus(true);
-    setTranscript(""); // Reset the transcript state to an empty string
+    setTranscript(""); 
   };
 
   const closeDialog = () => {
@@ -71,7 +78,8 @@ const Recording = () => {
         startToast={startToast}
         stopToast={stopToast}
         setTranscript={setTranscript}
-        savedToast={saveToast}
+        savedToast={redirect}
+        
       />    
     </>
   );

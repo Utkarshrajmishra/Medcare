@@ -20,7 +20,7 @@ export function Recorder({
   setTranscript,
   startToast,
   stopToast,
-  savedToast
+  savedToast,
 }) {
   const {
     listening,
