@@ -56,5 +56,4 @@ const AudioPrediction = () => {
     </>
   );
 };
-
 export default AudioPrediction;
