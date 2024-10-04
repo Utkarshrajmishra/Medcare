@@ -6,6 +6,7 @@ import Symptom from "./pages/Sympton";
 import Prediction from "./pages/Prediction";
 import Recording from "./pages/Recording";
 import AudioPrediction from "./pages/audioPrediction";
+import Auth from "./pages/Auth";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/sympton" element={<Symptom />} />
         <Route path="/prediction" element={<Prediction />} />
         <Route path="/audio-analysis" element={<Recording />} />
+        <Route path="/auth" element={<Auth />} />
         <Route path="/audio-prediction" element={<AudioPrediction />} />
       </Routes>
     </>
