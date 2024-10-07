@@ -5,9 +5,8 @@ import { useState } from "react";
 import { auth } from "@/firebase";
 import { ColorRing } from "react-loader-spinner";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
 
-const Signup = () => {
+const Signup = ({ authSwitcher }) => {
   const [loading, setLoading] = useState(false);
   const [isDoctor, setIsDoctor] = useState(false);
 
@@ -118,12 +117,12 @@ const Signup = () => {
               </button>
               <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
-                <Link
-                  href="#"
+                <span
+                  onClick={() => authSwitcher(true)}
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Sign up
-                </Link>
+                  Log In
+                </span>
               </p>
             </form>
           </div>
