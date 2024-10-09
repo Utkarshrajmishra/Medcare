@@ -36,3 +36,25 @@ export const doctorSchema = z.object({
     .max(500, { message: "About section must not exceed 500 characters." })
     .optional(),
 });
+
+// Create the Zod schema
+export const registrationSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, { message: "First name is required" })
+    .max(50, { message: "First name must be at most 50 characters" }),
+
+  lastName: z
+    .string()
+    .min(1, { message: "Last name is required" })
+    .max(50, { message: "Last name must be at most 50 characters" }),
+
+  email: z.string().email({ message: "Invalid email address" }),
+  state: z.string().min(1, { message: "State is required" }),
+  city: z.string().min(1, { message: "City name is required" }),
+  streetAddress: z.string().min(1, { message: "Street Address is required" }),
+  zipCode: z
+    .string()
+    .min(6, { message: "Invalid Zip Code" })
+    .max(6, { message: "Invalid Zip Code" }),
+});
