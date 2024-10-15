@@ -1,23 +1,28 @@
 import { useEffect, useState } from "react";
 import { db } from "@/firebase";
 import { getDocs, collection } from "firebase/firestore";
-
+import NavBar from "@/components/NavBar";
+import { LoadingDialog } from "@/components/LoadingDialog";
+import Doctor from "@/components/Doctor";
 const DoctorList = () => {
-  const [doctorInfo, setDoctorInfo] = useState([]);
+  const [doctorInfo, setDoctorInfo] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const querySnapshot = await getDocs(collection(db, "doctorInfo"));
         console.log(querySnapshot);
         const doctors = [];
         querySnapshot.forEach((doc) => {
           doctors.push({ id: doc.id, ...doc.data() });
         });
-        setDoctorInfo(doctors); // Save the fetched data to state
-        console.log(doctorInfo);
+        setDoctorInfo(doctors);
       } catch (error) {
         console.error("Error fetching doctor data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -26,14 +31,15 @@ const DoctorList = () => {
 
   return (
     <section>
-      <h1>Book Doctor</h1>
-      <ul>
-        {doctorInfo.map((doctor) => (
-          <li key={doctor.id}>
-            {doctor.name} - {doctor.specialization}
-          </li>
-        ))}
-      </ul>
+      <NavBar />
+      <section>
+        <LoadingDialog isOpen={doctorInfo} />
+        <section className="p-4 flex ">
+          {doctorInfo
+            ? doctorInfo.map((item, index) => <Doctor info={item} />)
+            : ""}
+        </section>
+      </section>
     </section>
   );
 };
