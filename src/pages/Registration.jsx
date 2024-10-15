@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+// src/components/Registration.jsx
+
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { registrationSchema } from "@/zod-schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,16 +16,23 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { db, storageRef } from "@/firebase"; // Ensure 'storage' is exported from your firebase config
+import { setDoc, doc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
+
 
 const Registration = () => {
   const [isDoctor, setIsDoctor] = useState(false);
   const [info, setInfo] = useState({
     country: "",
-    image: "",
+    image: null,
     about: "",
     specialty: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -39,9 +48,64 @@ const Registration = () => {
   };
 
   const registerUser = (data) => {
-    console.log(data);
-    console.log(info.image);
-    console.log(info.country);
+    uploadImage(data);
+  };
+
+  const uploadImage = async (data) => {
+    if (!info.image) {
+      console.log("Please choose an image.");
+      return;
+    }
+
+    if (
+      !info.country ||
+      (isDoctor && (!info.about || !info.password || !info.specialty))
+    ) {
+      console.log("All fields are required.");
+      return;
+    }
+
+    try {
+      const imageStorageRef = ref(storageRef, `images/${info.image.name}`);
+      const snapshot = await uploadBytes(imageStorageRef, info.image);
+      const url = await getDownloadURL(snapshot.ref);
+      await saveUserInfo(data, url);
+    } catch (error) {
+      console.error(error.message);
+      // toast.error("Image upload failed. Please try again.");
+    }
+  };
+
+  const saveUserInfo = async (data, ImageUrl) => {
+    const UserData = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      streetAddress: data.streetAddress,
+      city: data.city,
+      state: data.state,
+      zipCode: data.zipCode,
+      country: info.country,
+      imageUrl: ImageUrl,
+    };
+
+    if (isDoctor) {
+      UserData.about = info.about;
+      UserData.specialty = info.specialty;
+      UserData.password = info.password; 
+    }
+
+    const collectionName = isDoctor ? "doctorInfo" : "userInfo";
+    const docRef = doc(db, collectionName, data.email);
+
+    try {
+      await setDoc(docRef, UserData);
+      console.log("User Registered Successfully");
+      navigate("/"); // Redirect to desired route
+    } catch (error) {
+      console.error(error.message);
+      // toast.error("Registration failed. Please try again.");
+    }
   };
 
   return (
@@ -77,7 +141,9 @@ const Registration = () => {
                     id="firstName"
                     {...register("firstName")}
                     name="firstName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={`bg-gray-50 border ${
+                      errors.firstName ? "border-red-500" : "border-gray-300"
+                    } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   />
                   {errors.firstName && (
                     <p className="text-sm text-red-600">
@@ -98,7 +164,9 @@ const Registration = () => {
                     id="lastName"
                     {...register("lastName")}
                     name="lastName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={`bg-gray-50 border ${
+                      errors.lastName ? "border-red-500" : "border-gray-300"
+                    } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   />
                   {errors.lastName && (
                     <p className="text-sm text-red-600">
@@ -119,7 +187,9 @@ const Registration = () => {
                     id="email"
                     {...register("email")}
                     name="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={`bg-gray-50 border ${
+                      errors.email ? "border-red-500" : "border-gray-300"
+                    } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   />
                   {errors.email && (
                     <p className="text-sm text-red-600">
@@ -164,7 +234,9 @@ const Registration = () => {
                     id="state"
                     {...register("state")}
                     name="state"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={`bg-gray-50 border ${
+                      errors.state ? "border-red-500" : "border-gray-300"
+                    } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   />
                   {errors.state && (
                     <p className="text-sm text-red-600">
@@ -185,7 +257,9 @@ const Registration = () => {
                     id="city"
                     {...register("city")}
                     name="city"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={`bg-gray-50 border ${
+                      errors.city ? "border-red-500" : "border-gray-300"
+                    } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   />
                   {errors.city && (
                     <p className="text-sm text-red-600">
@@ -206,7 +280,11 @@ const Registration = () => {
                     id="streetAddress"
                     {...register("streetAddress")}
                     name="streetAddress"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={`bg-gray-50 border ${
+                      errors.streetAddress
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                   />
                   {errors.streetAddress && (
                     <p className="text-sm text-red-600">
@@ -226,8 +304,10 @@ const Registration = () => {
                     type="text"
                     id="zipCode"
                     name="zipCode"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    {...register}
+                    className={`bg-gray-50 border ${
+                      errors.zipCode ? "border-red-500" : "border-gray-300"
+                    } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                    {...register("zipCode")}
                   />
                   {errors.zipCode && (
                     <p className="text-sm text-red-600">
@@ -250,8 +330,11 @@ const Registration = () => {
                   name="image"
                   onChange={handleImage}
                   accept="image/png,image/jpeg"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className={`bg-gray-50 border ${
+                    !info.image ? "border-gray-300" : "border-red-500"
+                  } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                 />
+                {/* Optionally, display errors related to image if using react-hook-form */}
               </div>
             </div>
 
@@ -262,6 +345,7 @@ const Registration = () => {
                     id="isDoctor"
                     name="isDoctor"
                     onClick={() => setIsDoctor((prev) => !prev)}
+                    checked={isDoctor}
                   />
                   <Label
                     htmlFor="isDoctor"
@@ -271,7 +355,7 @@ const Registration = () => {
                   </Label>
                 </div>
 
-                {isDoctor ? (
+                {isDoctor && (
                   <div>
                     <div>
                       <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
@@ -292,7 +376,12 @@ const Registration = () => {
                         <Textarea
                           id="about"
                           name="about"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          onChange={(e) =>
+                            setInfo({ ...info, about: e.target.value })
+                          }
+                          className={`bg-gray-50 border ${
+                            !info.about ? "border-gray-300" : "border-red-500"
+                          } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                         />
                         <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-400">
                           Write a few sentences about yourself.
@@ -306,34 +395,54 @@ const Registration = () => {
                         >
                           Specialty
                         </Label>
-                        <Select name="specialty">
+                        <Select
+                          name="specialty"
+                          onValueChange={(value) =>
+                            setInfo({ ...info, specialty: value })
+                          }
+                        >
                           <SelectTrigger className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <SelectValue placeholder="Select your specialty" />
                           </SelectTrigger>
                           <SelectContent>
-                            {/* SelectItems remain the same */}
+                            <SelectItem value="cardiology">
+                              Cardiology
+                            </SelectItem>
+                            <SelectItem value="neurology">Neurology</SelectItem>
+                            <SelectItem value="pediatrics">
+                              Pediatrics
+                            </SelectItem>
+                            <SelectItem value="orthopedics">
+                              Orthopedics
+                            </SelectItem>
+                            {/* Add more specialties as needed */}
                           </SelectContent>
                         </Select>
                       </div>
 
                       <div className="mt-8">
                         <Label
-                          htmlFor="token-password"
+                          htmlFor="password"
                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
                           Doctor's Portal Password
                         </Label>
                         <Input
                           type="password"
-                          id="token-password"
-                          name="token-password"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[250px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          id="password"
+                          name="password"
+                          onChange={(e) =>
+                            setInfo({ ...info, password: e.target.value })
+                          }
+                          className={`bg-gray-50 border ${
+                            !info.password
+                              ? "border-gray-300"
+                              : "border-red-500"
+                          } text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-[250px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
                         />
                       </div>
                     </div>
                   </div>
-                ) : (
-                  ""
                 )}
 
                 <Button

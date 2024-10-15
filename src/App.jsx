@@ -9,6 +9,7 @@ import AudioPrediction from "./pages/audioPrediction";
 import Auth from "./pages/Auth";
 import { Toaster } from "react-hot-toast";
 import Registration from "./pages/Registration";
+import DoctorList from "./pages/DoctorList";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/audio-prediction" element={<AudioPrediction />} />
         <Route path="/registration" element={<Registration/>} />
+        <Route path="/doctors/list" element={<DoctorList/>} />
       </Routes>
     </>
   );
