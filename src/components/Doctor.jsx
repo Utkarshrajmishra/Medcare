@@ -1,6 +1,6 @@
 import React from "react";
 
-const Doctor = ({ info }) => {
+const Doctor = ({ info, checkout }) => {
   return (
     <section className="flex flex-col items-center gap-3 rounded-md bg-zinc-100 border p-4 w-64">
       <img
@@ -19,7 +19,7 @@ const Doctor = ({ info }) => {
         <p className="font-semibold">{`Dr. Utkarsh Raj Mishra`}</p>
         <p className="text-sm text-zinc-600">{info.about}</p>
       </div>
-      <button className="w-full bg-blue-500 hover:bg-blue-600 font-semibold px-3 text-[0.9rem] text-white py-2 rounded-md">
+      <button onClick={()=>checkout(info)} className="w-full bg-blue-500 hover:bg-blue-600 font-semibold px-3 text-[0.9rem] text-white py-2 rounded-md">
         $40 per consultation
       </button>
     </section>

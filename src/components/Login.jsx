@@ -8,8 +8,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-
+import { useNavigate } from "react-router-dom";
 const Login = ({ authSwitcher }) => {
+  const navigate=useNavigate()
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -27,7 +28,7 @@ const Login = ({ authSwitcher }) => {
         data.email,
         data.password
       );
-      console.log("Login");
+      navigate('/doctors/list')
     } catch (error) {
       console.log(error);
     } finally {

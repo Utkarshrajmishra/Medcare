@@ -4,9 +4,17 @@ import { getDocs, collection } from "firebase/firestore";
 import NavBar from "@/components/NavBar";
 import { LoadingDialog } from "@/components/LoadingDialog";
 import Doctor from "@/components/Doctor";
+import { useNavigate } from "react-router-dom";
+
 const DoctorList = () => {
   const [doctorInfo, setDoctorInfo] = useState();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const checkout = (data) => {
+    console.log(data);
+    navigate("/checkout", { state: data });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,9 +42,11 @@ const DoctorList = () => {
       <NavBar />
       <section>
         <LoadingDialog isOpen={doctorInfo} />
-        <section className="p-4 flex ">
+        <section className="p-8 flex ">
           {doctorInfo
-            ? doctorInfo.map((item, index) => <Doctor info={item} />)
+            ? doctorInfo.map((item, index) => (
+                <Doctor checkout={checkout} info={item} />
+              ))
             : ""}
         </section>
       </section>

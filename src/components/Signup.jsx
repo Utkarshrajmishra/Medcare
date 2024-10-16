@@ -5,9 +5,10 @@ import { useState } from "react";
 import { auth } from "@/firebase";
 import { ColorRing } from "react-loader-spinner";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Link } from "react-router-dom";
-const Signup = () => {
+import { useNavigate } from "react-router-dom";
+const Signup = ({ authSwitcher }) => {
   const [loading, setLoading] = useState(false);
+  const navigate=useNavigate()
   const [isDoctor, setIsDoctor] = useState(false);
   const {
     register,
@@ -112,19 +113,17 @@ const Signup = () => {
                   "Sign up"
                 )}
               </button>
-              <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{" "}
-                <Link
-                  href="#"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Sign up
-                </Link>
+              <p
+                onClick={() => authSwitcher(true)}
+                className="text-sm text-center font-light text-gray-500 dark:text-gray-400"
+              >
+                Don’t have an account yet? Log In
               </p>
             </form>
           </div>
-          </div>
-          </div>
-          </section>
-  )}
-  export default Signup
+        </div>
+      </div>
+    </section>
+  );
+};
+export default Signup;
