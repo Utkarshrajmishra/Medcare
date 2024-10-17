@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 const Login = ({ authSwitcher }) => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -28,7 +28,7 @@ const Login = ({ authSwitcher }) => {
         data.email,
         data.password
       );
-      navigate('/doctors/list')
+      navigate("/doctors/list");
     } catch (error) {
       console.log(error);
     } finally {
@@ -121,7 +121,7 @@ const Login = ({ authSwitcher }) => {
                 Don’t have an account yet?{" "}
                 <span
                   onClick={() => authSwitcher(false)}
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Sign up
                 </span>

@@ -8,7 +8,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 const Signup = ({ authSwitcher }) => {
   const [loading, setLoading] = useState(false);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [isDoctor, setIsDoctor] = useState(false);
   const {
     register,
@@ -25,7 +25,7 @@ const Signup = ({ authSwitcher }) => {
         data.email,
         data.password
       );
-      if (userCredentials) console.log("User created");
+      if (userCredentials) navigate("/registration");
     } catch (error) {
       console.log(error);
     } finally {
@@ -85,10 +85,10 @@ const Signup = ({ authSwitcher }) => {
                   </p>
                 )}
               </div>
-              <div className="flex gap-1">
+              {/* <div className="flex gap-1">
                 <input type="checkbox" name="doctor" id="doctor" />
                 <p>Register as a Doctor</p>
-              </div>
+              </div> */}
               <button
                 type="submit"
                 className="w-full flex justify-center text-white bg-primaryColor hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -115,9 +115,10 @@ const Signup = ({ authSwitcher }) => {
               </button>
               <p
                 onClick={() => authSwitcher(true)}
-                className="text-sm text-center font-light text-gray-500 dark:text-gray-400"
+                className="text-sm  text-center  text-gray-500 dark:text-gray-400"
               >
-                Don’t have an account yet? Log In
+                Don’t have an account yet?
+                <span className="font-semibold"> Log In</span>
               </p>
             </form>
           </div>
