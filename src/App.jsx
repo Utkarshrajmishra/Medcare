@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import Registration from "./pages/Registration";
 import DoctorList from "./pages/DoctorList";
 import Checkout from "./pages/Checkout";
+import Table from "./pages/Table";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/registration" element={<Registration/>} />
         <Route path="/doctors/list" element={<DoctorList/>} />
         <Route path="/checkout" element={<Checkout/>} />
+        <Route path="/data/table" element={<Table/>} />
       </Routes>
     </>
   );
