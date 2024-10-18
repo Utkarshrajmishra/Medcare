@@ -4,10 +4,11 @@ import NavBar from "./NavBar";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { DoctorContext } from "@/context/IsDoctor";
+import { useNavigate } from "react-router-dom";
 
 const PortalPassword = () => {
   const { isDoctor, setIsDoctor } = useContext(DoctorContext);
-
+    const navigate=useNavigate()
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -34,6 +35,7 @@ const PortalPassword = () => {
         // Check if password matches
         if (data.password === password) {
           setIsDoctor({ ...isDoctor, doctorLogin: true });
+          navigate('/doctor/table')
           console.log("Login successful");
           // Perform login actions here
         } else {

@@ -17,7 +17,7 @@ export function DataTable({ data }) {
       <TableHeader>
         <TableRow>
           <TableHead className="w-[120px]">Serial No.</TableHead>
-          <TableHead>Doctor Name</TableHead>
+          <TableHead> Name</TableHead>
           <TableHead>Date</TableHead>
           <TableHead>Time</TableHead>
           <TableHead>Email</TableHead>

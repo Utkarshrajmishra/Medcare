@@ -13,6 +13,8 @@ import DoctorList from "./pages/DoctorList";
 import Checkout from "./pages/Checkout";
 import Table from "./pages/Table";
 import PortalPassword from "./components/PortalPassword";
+import { Data } from "./components/Data";
+import { PatientList } from "./pages/PatientList";
 
 function App() {
   return (
@@ -25,11 +27,12 @@ function App() {
         <Route path="/audio-analysis" element={<Recording />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/audio-prediction" element={<AudioPrediction />} />
-        <Route path="/registration" element={<Registration/>} />
-        <Route path="/doctors/list" element={<DoctorList/>} />
-        <Route path="/checkout" element={<Checkout/>} />
-        <Route path="/data/table" element={<Table/>} />
-        <Route path="/doctor/password" element={<PortalPassword/>}/>
+        <Route path="/registration" element={<Registration />} />
+        <Route path="/doctors/list" element={<DoctorList />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/data/table" element={<Table />} />
+        <Route path="/doctor/password" element={<PortalPassword />} />
+        <Route path="/doctor/table" element={<PatientList />} />
       </Routes>
     </>
   );
