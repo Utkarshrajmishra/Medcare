@@ -22,6 +22,11 @@ const NavLinks = [
     links: "Booking List",
     path: "/data/table",
   },
+  {
+    id: 5,
+    links: "Doctor List",
+    path: "/doctors/list",
+  },
 ];
 
 const NavBar = () => {
