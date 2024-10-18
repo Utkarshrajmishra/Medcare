@@ -1,7 +1,7 @@
 import NavBar from "@/components/NavBar";
 import { useLocation } from "react-router-dom";
 import { DatePicker } from "@/components/DatePicker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -17,7 +17,9 @@ import {
   setDoc,
   query,
   where,
+  getDoc
 } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import { db } from "@/firebase";
 import { getAuth } from "firebase/auth";
 import { useForm } from "react-hook-form";
@@ -25,7 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const Checkout = () => {
   const auth = getAuth();
   const user = auth.currentUser;
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -35,10 +37,33 @@ const Checkout = () => {
   });
   const location = useLocation();
   const data = location.state;
+  console.log(data);
+  const [userData, setUserData] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
   const [check, setCheck] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchingData = async () => {
+      try {
+        setLoading(true);
+        const querySnapshot = await getDoc(
+          doc(db, `userInfo`, `${user.email}`)
+        );
+        setUserData(querySnapshot.data());
+        console.log(querySnapshot.data());
+        console.log("hello")
+        // Call fetchDetail for each doctor to retrieve their details
+      } catch (error) {
+        console.error("Error fetching doctor data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchingData();
+  }, []);
 
   const checkAvailability = async () => {
     if (!date || !time) return console.log("Checking aviability is required");
@@ -62,13 +87,19 @@ const Checkout = () => {
   };
 
   const submit = async (formData) => {
-    if(check==null) return console.log("check aviability");
+    if (check == null) return console.log("check aviability");
     if (!date || !time) return console.log("Checking aviability is required");
     const bookingRef = doc(db, `${user.email}booking`, `${date}${time}`);
     try {
       setLoading(true);
       await setDoc(bookingRef, {
-        doctor: data.email,
+        doctorEmail: data.email,
+        doctorFirstName: data.firstName,
+        doctorLastName: data.lastName,
+        doctorStreetAddress: data.streetAddress,
+        doctorCountry: data.country,
+        doctorState: data.state,
+        doctorSpecialty: data.specialty,
         time: time,
         date: date,
         status: false,
@@ -82,12 +113,18 @@ const Checkout = () => {
   };
 
   const doctorSubmit = async () => {
+    console;
     const bookingRef = doc(db, `${data.email}booking`, `${date}${time}`);
     try {
       await setDoc(bookingRef, {
         date: date,
         time: time,
         useremail: user.email,
+        userfirstName: userData.firstName,
+        userLastName: userData.lastName,
+        userStreet: userData.streetAddress,
+        userCountry: userData.country,
+        userCity: userData.city,
       });
       console.log("User Registered Successfully");
     } catch (error) {

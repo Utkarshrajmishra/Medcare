@@ -17,6 +17,11 @@ const NavLinks = [
     links: "Audio Analysis",
     path: "/audio-analysis",
   },
+  {
+    id: 4,
+    links: "Booking List",
+    path: "/data/table",
+  },
 ];
 
 const NavBar = () => {
