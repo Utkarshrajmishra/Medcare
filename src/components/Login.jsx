@@ -1,17 +1,17 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authSchema } from "@/zod-schema/auth";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { auth } from "@/firebase";
 import { ColorRing } from "react-loader-spinner";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { DoctorContext } from "@/context/IsDoctor";
 const Login = ({ authSwitcher }) => {
+  const { isDoctor, setIsDoctor } = useContext(DoctorContext);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const [doctor, setDoctor] = useState(false); // State to check if user is a doctor
+  const [loading, setLoading] = useState(false); // State for loader
   const {
     register,
     handleSubmit,
@@ -20,15 +20,29 @@ const Login = ({ authSwitcher }) => {
     resolver: zodResolver(authSchema),
   });
 
+  // Toggle the "doctor" checkbox
+  const handleCheckBox = () => {
+    setDoctor((prev) => !prev);
+  };
+
+  // Handle login form submission
   const loginUser = async (data) => {
     setLoading(true);
     try {
+      // Attempt to sign in the user
       const user = await signInWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
-      navigate("/doctors/list");
+
+      // Redirect based on whether the user is a doctor or not
+      if (doctor) {
+        setIsDoctor({ ...isDoctor, doctorEmail: data.email });
+        navigate("/doctor/password");
+      } else {
+        navigate("/doctors/list");
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -37,22 +51,22 @@ const Login = ({ authSwitcher }) => {
   };
 
   return (
-    <section class="bg-gray-50 dark:bg-gray-900">
-      <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 class="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Login in to your account
+    <section className="bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+              Login to your account
             </h1>
             <form
               onSubmit={handleSubmit(loginUser)}
-              class="space-y-4 md:space-y-6"
+              className="space-y-4 md:space-y-6"
               action="#"
             >
               <div>
                 <label
-                  for="email"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Your email
                 </label>
@@ -61,7 +75,7 @@ const Login = ({ authSwitcher }) => {
                   type="email"
                   name="email"
                   id="email"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="utkarsh@gmail.com"
                 />
                 {errors.email && (
@@ -70,8 +84,8 @@ const Login = ({ authSwitcher }) => {
               </div>
               <div>
                 <label
-                  for="password"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Password
                 </label>
@@ -81,7 +95,7 @@ const Login = ({ authSwitcher }) => {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
                 {errors.password && (
                   <p className="text-sm text-red-500">
@@ -89,13 +103,24 @@ const Login = ({ authSwitcher }) => {
                   </p>
                 )}
               </div>
-              <div className="flex gap-1">
-                <input type="checkbox" name="doctor" id="doctor" />
-                <p>Login as a Doctor</p>
+              <div className="flex gap-2 items-center">
+                <input
+                  type="checkbox"
+                  name="doctor"
+                  id="doctor"
+                  checked={doctor}
+                  onChange={handleCheckBox} // Updated checkbox handling
+                />
+                <label
+                  htmlFor="doctor"
+                  className="text-sm text-gray-900 dark:text-white"
+                >
+                  Login as a Doctor
+                </label>
               </div>
               <button
                 type="submit"
-                class="w-full flex justify-center text-white bg-primaryColor hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full flex justify-center text-white bg-primaryColor hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 {loading ? (
                   <ColorRing
@@ -117,11 +142,11 @@ const Login = ({ authSwitcher }) => {
                   "Log In"
                 )}
               </button>
-              <p class="text-sm text-center font-light text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
                 <span
                   onClick={() => authSwitcher(false)}
-                  className="font-semibold text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-semibold text-primary-600 hover:underline dark:text-primary-500 cursor-pointer"
                 >
                   Sign up
                 </span>
