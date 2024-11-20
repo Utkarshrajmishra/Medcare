@@ -9,7 +9,7 @@ import {
 import { Ellipsis } from "lucide-react"; 
 
 
-export function PopoverComp() {
+export function PopoverComp({ setDialogOpen }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -32,7 +32,7 @@ export function PopoverComp() {
             <button className="text-sm text-white hover:bg-blue-600 bg-blue-500 p-2 rounded-md ">
               Start Video Chat
             </button>
-            <button className="text-sm text-white  hover:bg-blue-600 bg-blue-500 p-2 rounded-md ">
+            <button onClick={()=>setDialogOpen(true)} className="text-sm text-white  hover:bg-blue-600 bg-blue-500 p-2 rounded-md ">
               Start Chat
             </button>
           </div>

@@ -44,7 +44,7 @@ export const PatientList = () => {
           List of all appointements
         </p>
         <section className="p-6">
-          <Data data={data} />
+          <Data data={data}  />
         </section>
       </section>
     </section>

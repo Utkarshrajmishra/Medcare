@@ -9,9 +9,11 @@
       TableRow,
     } from "@/components/ui/table";
     import { PopoverComp } from "./PopOver";
+import { useState } from "react";
+import { RoomInput } from "./RoomInput";
 
     export function Data({ data }) {
-        console.log(data)
+        const [dialogOpen, setDialogOpen] = useState(false)
       return (
         <Table>
           <TableCaption>A list of your appointments.</TableCaption>
@@ -51,12 +53,12 @@
                   </span>
                 </TableCell>
                 <TableCell>
-                  {item.userStreet}, {item.userCity},{" "}
-                  {item.userCountry}
+                  {item.userStreet}, {item.userCity}, {item.userCountry}
                 </TableCell>
-                 <TableCell>
-              <PopoverComp />
-            </TableCell> 
+                <TableCell>
+                  <PopoverComp setDialogOpen={setDialogOpen}/>
+                  <RoomInput dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}/>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
