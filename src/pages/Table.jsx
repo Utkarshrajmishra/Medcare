@@ -42,8 +42,9 @@ const Table = () => {
       <NavBar />
       <section className="py-4 px-6">
         {/* Pass the fetched data to DataTable as props */}
-        <DataTable data={data}  />
+        <DataTable data={data} />
       </section>
+      
     </section>
   );
 };

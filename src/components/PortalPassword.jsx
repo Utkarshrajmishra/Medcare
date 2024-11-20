@@ -5,6 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { DoctorContext } from "@/context/IsDoctor";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const PortalPassword = () => {
   const { isDoctor, setIsDoctor } = useContext(DoctorContext);
@@ -27,7 +28,7 @@ const PortalPassword = () => {
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) {
-        setError("No registered doctor found");
+        toast.error("No registered doctor found");
         console.log("No registered doctor found");
       } else {
         const data = docSnap.data();
@@ -36,14 +37,14 @@ const PortalPassword = () => {
         if (data.password === password) {
           setIsDoctor({ ...isDoctor, doctorLogin: true });
           navigate('/doctor/table')
-          console.log("Login successful");
+          toast.success("Login successful");
           // Perform login actions here
         } else {
-          setError("Incorrect password");
+          toast.error("Incorrect password");
         }
       }
     } catch (error) {
-      console.error("Error fetching doctor info:", error);
+      toast.error("Error fetching doctor info:", error);
       setError("Something went wrong, please try again.");
     } finally {
       setLoading(false); // Set loading state back to false after async call
@@ -92,6 +93,7 @@ const PortalPassword = () => {
           </button>
         </section>
       </section>
+      <ToastContainer/>
     </section>
   );
 };

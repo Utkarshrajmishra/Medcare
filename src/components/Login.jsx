@@ -7,7 +7,7 @@ import { ColorRing } from "react-loader-spinner";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { DoctorContext } from "@/context/IsDoctor";
-const Login = ({ authSwitcher }) => {
+const Login = ({ authSwitcher,success, errorsToast }) => {
   const { isDoctor, setIsDoctor } = useContext(DoctorContext);
   const navigate = useNavigate();
   const [doctor, setDoctor] = useState(false); // State to check if user is a doctor
@@ -35,16 +35,17 @@ const Login = ({ authSwitcher }) => {
         data.email,
         data.password
       );
-
+      success("Login successfull");
       // Redirect based on whether the user is a doctor or not
       if (doctor) {
         setIsDoctor({ ...isDoctor, doctorEmail: data.email });
+        
         navigate("/doctor/password");
       } else {
         navigate("/doctors/list");
       }
     } catch (error) {
-      console.log(error);
+      errorsToast(error)
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import Logo from "../assets/images/logo.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const NavLinks = [
   {
@@ -30,6 +31,7 @@ const NavLinks = [
 ];
 
 const NavBar = () => {
+  const navigate = useNavigate();
   return (
     <nav className="py-5 shadow-sm ">
       <section className="flex items-center text-textColor justify-between md:px-20 px-10">
@@ -43,10 +45,14 @@ const NavBar = () => {
             </li>
           ))}
         </ul>
-        <button className="bg-primaryColor px-5 text-[0.9rem] text-white py-2 rounded-3xl">
+        <button
+          onClick={() => navigate("/auth")}
+          className="bg-primaryColor px-5 text-[0.9rem] text-white py-2 rounded-3xl"
+        >
           Login
         </button>
       </section>
+      
     </nav>
   );
 };

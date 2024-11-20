@@ -18,47 +18,23 @@ export function PopoverComp() {
           <Ellipsis />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80">
+      <PopoverContent className="w-40 bg-zinc-50">
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="font-medium leading-none">Dimensions</h4>
-            <p className="text-sm text-muted-foreground">
-              Set the dimensions for the layer.
-            </p>
+            <h4 className="font-medium text-center leading-none text-neutral-600">
+              Your Options
+            </h4>
           </div>
-          <div className="grid gap-2">
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="width">Width</Label>
-              <Input
-                id="width"
-                defaultValue="100%"
-                className="col-span-2 h-8"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="maxWidth">Max. width</Label>
-              <Input
-                id="maxWidth"
-                defaultValue="300px"
-                className="col-span-2 h-8"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="height">Height</Label>
-              <Input
-                id="height"
-                defaultValue="25px"
-                className="col-span-2 h-8"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="maxHeight">Max. height</Label>
-              <Input
-                id="maxHeight"
-                defaultValue="none"
-                className="col-span-2 h-8"
-              />
-            </div>
+          <div className="flex flex-col gap-2">
+            <button className="text-sm text-white  hover:bg-blue-600 bg-blue-500 p-2 rounded-md ">
+              Mark Complete
+            </button>
+            <button className="text-sm text-white hover:bg-blue-600 bg-blue-500 p-2 rounded-md ">
+              Start Video Chat
+            </button>
+            <button className="text-sm text-white  hover:bg-blue-600 bg-blue-500 p-2 rounded-md ">
+              Start Chat
+            </button>
           </div>
         </div>
       </PopoverContent>

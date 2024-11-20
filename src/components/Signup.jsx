@@ -6,7 +6,7 @@ import { auth } from "@/firebase";
 import { ColorRing } from "react-loader-spinner";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-const Signup = ({ authSwitcher }) => {
+const Signup = ({ authSwitcher, success, errorToast}) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [isDoctor, setIsDoctor] = useState(false);
@@ -25,8 +25,10 @@ const Signup = ({ authSwitcher }) => {
         data.email,
         data.password
       );
+      success("User created successfully")
       if (userCredentials) navigate("/registration");
     } catch (error) {
+      errorToast(error);
       console.log(error);
     } finally {
       setLoading(false);
