@@ -39,9 +39,21 @@ const Login = ({ authSwitcher,success, errorsToast }) => {
       // Redirect based on whether the user is a doctor or not
       if (doctor) {
         setIsDoctor({ ...isDoctor, doctorEmail: data.email });
-        
+        sessionStorage.setItem("auth", JSON.stringify({
+          auth:true,
+          email:data.email,
+          isDoctor:true
+        }))
         navigate("/doctor/password");
       } else {
+         sessionStorage.setItem(
+           "auth",
+           JSON.stringify({
+             auth: true,
+             email: data.email,
+             isDoctor: false,
+           })
+         );
         navigate("/doctors/list");
       }
     } catch (error) {

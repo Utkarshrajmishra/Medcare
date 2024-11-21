@@ -1,4 +1,4 @@
-const Room = () => {
+const Room = ({setID,id}) => {
 
   return (
     <section className="flex flex-col gap-4">
@@ -17,6 +17,8 @@ const Room = () => {
             Room ID
           </label>
           <input
+           value={id}
+           onChange={(e)=>setID(e.target.value)}
             type="text"
             name="room"
             id="room"
