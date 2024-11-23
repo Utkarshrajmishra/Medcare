@@ -13,6 +13,7 @@ const PortalPassword = () => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const storedData=JSON.parse(sessionStorage.getItem("auth"))
 
   const handleSubmit = async () => {
     // Validate password input
@@ -24,7 +25,7 @@ const PortalPassword = () => {
 
     try {
       // Fetch doctor information from Firestore
-      const docRef = doc(db, "doctorInfo", `${isDoctor.doctorEmail}`);
+      const docRef = doc(db, "doctorInfo", `${storedData.email}`);
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) {

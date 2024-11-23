@@ -11,14 +11,16 @@ const Table = () => {
   const [userData, setUserData] = useState([]); // Initialize as an empty array
   const [loading, setLoading] = useState(false);
   const { isDoctor, setIsDoctor } = useContext(DoctorContext);
-  const auth = getAuth();
-  const user = auth.currentUser.email;
+  // const auth = getAuth();
+  // const user = auth.currentUser.email;
+  const storedData = JSON.parse(sessionStorage.getItem("auth"));
+
 
   useEffect(() => {
     const fetchingData = async () => {
       try {
         setLoading(true);
-        const querySnapshot = await getDocs(collection(db, `${user}booking`));
+        const querySnapshot = await getDocs(collection(db, `${storedData.email}booking`));
         const doctors = [];
         querySnapshot.forEach((doc) => {
           doctors.push({ id: doc.id, ...doc.data() });

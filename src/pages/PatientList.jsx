@@ -9,6 +9,7 @@ export const PatientList = () => {
   const { isDoctor, setIsDoctor } = useContext(DoctorContext);
   const [data, setData] = useState([]); // Initialize as an empty array
   const [loading, setLoading] = useState(false);
+  const storedData = JSON.parse(sessionStorage.getItem("auth"));
 
   console.log(isDoctor);
   useEffect(() => {
@@ -16,7 +17,7 @@ export const PatientList = () => {
       try {
         setLoading(true);
         const querySnapshot = await getDocs(
-          collection(db, `${isDoctor.doctorEmail}booking`)
+          collection(db, `${storedData.email}booking`)
         );
         const doctors = [];
         querySnapshot.forEach((doc) => {
@@ -44,7 +45,7 @@ export const PatientList = () => {
           List of all appointements
         </p>
         <section className="p-6">
-          <Data data={data}  />
+          <Data data={data} />
         </section>
       </section>
     </section>
