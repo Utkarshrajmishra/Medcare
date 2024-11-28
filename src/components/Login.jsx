@@ -30,12 +30,21 @@ const Login = ({ authSwitcher,success, errorsToast }) => {
     setLoading(true);
     try {
       // Attempt to sign in the user
-      const user = await signInWithEmailAndPassword(
+      const result = await signInWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
-      success("Login successfull");
+      console.log(result.user.emailVerified)
+      if (!result.user.emailVerified){
+        console.log('Please verify your email')
+        await signOut(auth)
+          navigate("/login");
+          return
+      }
+        
+        success("Login successfull");
+      
       // Redirect based on whether the user is a doctor or not
       if (doctor) {
         setIsDoctor({ ...isDoctor, doctorEmail: data.email });

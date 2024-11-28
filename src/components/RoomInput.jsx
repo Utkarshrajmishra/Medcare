@@ -8,20 +8,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Room from "./Room";
 import { useState } from "react";
+import { db } from "@/firebase";
+import { useNavigate } from "react-router-dom";
 
 export function RoomInput({ dialogOpen, setDialogOpen }) {
   const [id,setID]=useState('')
+  const navigate=useNavigate()
+
+  const handleSubmit=async()=>{
+          navigate("/chat",{state:id})
+  }
+
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader></DialogHeader>
         <Room setID={setID} id={id}/>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button onClick={handleSubmit} type="submit">Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -4,7 +4,7 @@ import { authSchema } from "@/zod-schema/auth";
 import { useState } from "react";
 import { auth } from "@/firebase";
 import { ColorRing } from "react-loader-spinner";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 const Signup = ({ authSwitcher, success, errorToast}) => {
   const [loading, setLoading] = useState(false);
@@ -25,6 +25,8 @@ const Signup = ({ authSwitcher, success, errorToast}) => {
         data.email,
         data.password
       );
+          const user = userCredentials.user;
+          await sendEmailVerification(user);
       success("User created successfully")
       if (userCredentials) navigate("/registration");
     } catch (error) {
