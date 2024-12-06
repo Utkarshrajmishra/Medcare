@@ -11,7 +11,6 @@ export const PatientList = () => {
   const [loading, setLoading] = useState(false);
   const storedData = JSON.parse(sessionStorage.getItem("auth"));
 
-  console.log(isDoctor);
   useEffect(() => {
     const fetchingData = async () => {
       try {
@@ -23,6 +22,7 @@ export const PatientList = () => {
         querySnapshot.forEach((doc) => {
           doctors.push({ id: doc.id, ...doc.data() });
         });
+        console.log("hello")
         console.log(doctors);
         setData(doctors);
 
