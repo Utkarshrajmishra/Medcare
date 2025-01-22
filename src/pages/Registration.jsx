@@ -97,7 +97,7 @@ const Registration = () => {
 
     try {
       await setDoc(docRef, UserData);
-      saveUser(data)
+      saveUser(data, ImageUrl)
       console.log("User Registered Successfully");
       navigate("/"); // Redirect to desired route
     } catch (error) {
@@ -106,13 +106,14 @@ const Registration = () => {
     }
   };
 
-  const saveUser=async(data)=>{
+  const saveUser=async(data, imageUrl)=>{
     try{
         const UserData = {
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
-          isDoctor: isDoctor
+          isDoctor: isDoctor,
+          imageUrl: imageUrl
         };
 
         const docRef=doc(db, "users", data.email)
