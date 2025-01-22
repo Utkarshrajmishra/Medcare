@@ -14,7 +14,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { db, storageRef } from "@/firebase"; // Ensure 'storage' is exported from your firebase config
+import { db, storageRef } from "@/firebase"; 
 import { setDoc, doc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
@@ -70,7 +70,6 @@ const Registration = () => {
       await saveUserInfo(data, url);
     } catch (error) {
       console.error(error.message);
-      // toast.error("Image upload failed. Please try again.");
     }
   };
 
@@ -98,6 +97,7 @@ const Registration = () => {
 
     try {
       await setDoc(docRef, UserData);
+      saveUser(data)
       console.log("User Registered Successfully");
       navigate("/"); // Redirect to desired route
     } catch (error) {
@@ -105,6 +105,24 @@ const Registration = () => {
       // toast.error("Registration failed. Please try again.");
     }
   };
+
+  const saveUser=async(data)=>{
+    try{
+        const UserData = {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          isDoctor: isDoctor
+        };
+
+        const docRef=doc(db, "users", data.email)
+        await setDoc(docRef, UserData)
+      } catch(error){
+      console.error(error.message);
+      // toast.error("Registration failed. Please try again.");
+    }
+
+  }
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">

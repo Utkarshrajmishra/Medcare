@@ -35,13 +35,13 @@ const Login = ({ authSwitcher,success, errorsToast }) => {
         data.email,
         data.password
       );
-      console.log(result.user.emailVerified)
-      if (!result.user.emailVerified){
-        console.log('Please verify your email')
-        await signOut(auth)
-          navigate("/login");
-          return
-      }
+      // console.log(result.user.emailVerified)
+      // if (!result.user.emailVerified){
+      //   console.log('Please verify your email')
+      //   await signOut(auth)
+      //     navigate("/login");
+      //     return
+      // }
         
         success("Login successfull");
       
