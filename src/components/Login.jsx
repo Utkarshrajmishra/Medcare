@@ -2,12 +2,15 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authSchema } from "@/zod-schema/auth";
 import { useContext, useState } from "react";
-import { auth } from "@/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "@/firebase";
 import { ColorRing } from "react-loader-spinner";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { DoctorContext } from "@/context/IsDoctor";
-const Login = ({ authSwitcher,success, errorsToast }) => {
+import { UserContext } from "@/context/UserContext";
+const Login = ({ authSwitcher, success, errorsToast }) => {
+  const {setUserInfo}=useContext(UserContext)
   const { isDoctor, setIsDoctor } = useContext(DoctorContext);
   const navigate = useNavigate();
   const [doctor, setDoctor] = useState(false); // State to check if user is a doctor
@@ -26,51 +29,74 @@ const Login = ({ authSwitcher,success, errorsToast }) => {
   };
 
   // Handle login form submission
-  const loginUser = async (data) => {
-    setLoading(true);
-    try {
-      // Attempt to sign in the user
-      const result = await signInWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-      // console.log(result.user.emailVerified)
-      // if (!result.user.emailVerified){
-      //   console.log('Please verify your email')
-      //   await signOut(auth)
-      //     navigate("/login");
-      //     return
-      // }
-        
-        success("Login successfull");
-      
-      // Redirect based on whether the user is a doctor or not
-      if (doctor) {
-        setIsDoctor({ ...isDoctor, doctorEmail: data.email });
-        sessionStorage.setItem("auth", JSON.stringify({
-          auth:true,
-          email:data.email,
-          isDoctor:true
-        }))
-        navigate("/doctor/password");
-      } else {
-         sessionStorage.setItem(
-           "auth",
-           JSON.stringify({
-             auth: true,
-             email: data.email,
-             isDoctor: false,
-           })
-         );
-        navigate("/doctors/list");
-      }
-    } catch (error) {
-      errorsToast(error)
-    } finally {
-      setLoading(false);
-    }
-  };
+ const loginUser = async (data) => {
+   setLoading(true);
+   try {
+     // Attempt to sign in the user
+     const result = await signInWithEmailAndPassword(
+       auth,
+       data.email,
+       data.password
+     );
+
+     // Get user data after successful login
+     getUser(data);
+
+     success("Login successful");
+
+     // Redirect based on whether the user is a doctor or not
+     if (doctor) {
+       setIsDoctor({ ...isDoctor, doctorEmail: data.email });
+       sessionStorage.setItem(
+         "auth",
+         JSON.stringify({
+           auth: true,
+           email: data.email,
+           isDoctor: true,
+         })
+       );
+       navigate("/doctor/password");
+     } else {
+       sessionStorage.setItem(
+         "auth",
+         JSON.stringify({
+           auth: true,
+           email: data.email,
+           isDoctor: false,
+         })
+       );
+       navigate("/doctors/list");
+     }
+   } catch (error) {
+     errorsToast(error);
+   } finally {
+     setLoading(false);
+   }
+ };
+
+ const getUser = async (data) => {
+   try {
+     const docRef = doc(db, "users", data.email);
+     const docSnap = await getDoc(docRef);
+
+     if (docSnap.exists()) {
+       console.log("Document data:", docSnap.data());
+       setUserInfo({
+         firstName: data.firstName,
+         lastName: data.lastName,
+         email: data.email,
+         isDoctor: data.isDoctor,
+         imageUrl: data.imageUrl,
+         isLogin: true,
+       });
+
+     } else {
+       console.log("No such document!");
+     }
+   } catch (error) {
+     console.log(error.message);
+   }
+ };
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">

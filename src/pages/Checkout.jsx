@@ -52,9 +52,6 @@ const Checkout = () => {
           doc(db, `userInfo`, `${user.email}`)
         );
         setUserData(querySnapshot.data());
-        console.log(querySnapshot.data());
-        console.log("hello")
-        // Call fetchDetail for each doctor to retrieve their details
       } catch (error) {
         console.error("Error fetching doctor data:", error);
       } finally {

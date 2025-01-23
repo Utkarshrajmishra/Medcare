@@ -22,8 +22,6 @@ export const PatientList = () => {
         querySnapshot.forEach((doc) => {
           doctors.push({ id: doc.id, ...doc.data() });
         });
-        console.log("hello")
-        console.log(doctors);
         setData(doctors);
 
         // Call fetchDetail for each doctor to retrieve their details

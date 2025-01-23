@@ -12,7 +12,6 @@ const DoctorList = () => {
   const navigate = useNavigate();
 
   const checkout = (data) => {
-    console.log(data);
     navigate("/checkout", { state: data });
   };
 
