@@ -80,16 +80,16 @@ const Login = ({ authSwitcher, success, errorsToast }) => {
      const docSnap = await getDoc(docRef);
 
      if (docSnap.exists()) {
-       console.log("Document data:", docSnap.data());
-       setUserInfo({
-         firstName: data.firstName,
-         lastName: data.lastName,
-         email: data.email,
-         isDoctor: data.isDoctor,
-         imageUrl: data.imageUrl,
+      const dataRef=docSnap.data()
+      setUserInfo({
+         firstName: dataRef.firstName,
+         lastName: dataRef.lastName,
+         email: dataRef.email,
+         isDoctor: dataRef.isDoctor,
+         imageUrl: dataRef.imageUrl,
          isLogin: true,
        });
-
+      console.log(data)
      } else {
        console.log("No such document!");
      }
