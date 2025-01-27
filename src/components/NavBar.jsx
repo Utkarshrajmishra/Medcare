@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "@/context/UserContext";
 import { PopoverDemo } from "./User";
 import { useState } from "react";
+import { ProfileMenu } from "./UserProfile";
 
 const NavLinks = [
   {
@@ -42,7 +43,7 @@ const NavBar = () => {
   return (
     <>
       <nav className="py-5 shadow-sm ">
-        <section className="flex items-center text-textColor justify-between md:px-20 px-10">
+        <section className="flex items-center text-textColor justify-between  px-[10%]">
           <div>
             <img src={Logo} alt="wesbite logo" />
           </div>
@@ -54,10 +55,7 @@ const NavBar = () => {
             ))}
           </ul>
           <div>
-            {userInfo && userInfo.isLogin ? (
-              <button onClick={() => setOpen(true)}>
-                <img src={userInfo.imageUrl} alt={userInfo.firstName}  className="h-10 w-10 rounded-full bg-cover"/>
-              </button>
+            {userInfo && userInfo.isLogin ? (              <ProfileMenu />
             ) : (
               <button
                 onClick={() => navigate("/auth")}
