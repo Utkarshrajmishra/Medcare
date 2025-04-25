@@ -16,6 +16,7 @@ import PortalPassword from "./components/PortalPassword";
 import { Data } from "./components/Data";
 import { PatientList } from "./pages/PatientList";
 import Chat from "./pages/Chat";
+import HeartDiseasePredictorPage from "./pages/heartDisease";
 
 function App() {
   return (
@@ -34,7 +35,8 @@ function App() {
         <Route path="/data/table" element={<Table />} />
         <Route path="/doctor/password" element={<PortalPassword />} />
         <Route path="/doctor/table" element={<PatientList />} />
-        <Route path="/chat" element={<Chat/>} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/heart-disease" element={<HeartDiseasePredictorPage/>} />
       </Routes>
     </>
   );
