@@ -16,7 +16,7 @@ const Doctor = ({ info, checkout }) => {
         </p>
       </div>
       <div className="text-center w-full">
-        <p className="font-semibold">{`Dr. Utkarsh Raj Mishra`}</p>
+        <p className="font-semibold">{`${info.firstName}`}</p>
         <p className="text-sm text-zinc-600">{info.about}</p>
       </div>
       <button onClick={()=>checkout(info)} className="w-full bg-blue-500 hover:bg-blue-600 font-semibold px-3 text-[0.9rem] text-white py-2 rounded-md">
