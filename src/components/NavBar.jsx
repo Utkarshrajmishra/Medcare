@@ -33,6 +33,11 @@ const NavLinks = [
     links: "Doctor List",
     path: "/doctors/list",
   },
+  {
+    id: 6,
+    links: "Heart Disease Prediction",
+    path: "/heart-disease",
+  },
 ];
 
 const NavBar = () => {
